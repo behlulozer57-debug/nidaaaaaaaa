@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nida 💗</title>
+
+<style>
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:linear-gradient(135deg,#ffd6e8,#ffeef6);
+}
+.chat-container{
+  max-width:420px;
+  margin:auto;
+  padding:10px;
+}
+.chat-header{
+  background:#ff4f9a;
+  color:white;
+  padding:14px;
+  border-radius:14px 14px 0 0;
+  text-align:center;
+  font-weight:600;
+}
+.typing{font-size:12px;opacity:.9;text-align:center;margin-bottom:4px;}
+
+.chat-box{
+  background:#f7f7f7;
+  min-height:220px;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  border-radius:0 0 14px 14px;
+  overflow-y:auto;
+}
+
+.message{
+  max-width:75%;
+  padding:10px 14px;
+  margin:6px 0;
+  border-radius:14px;
+  font-size:14px;
+  animation:pop .25s ease;
+}
+.from-nida{
+  background:white;
+  align-self:flex-start;
+  border-top-left-radius:4px;
+}
+.from-you{
+  background:#dcf8c6;
+  align-self:flex-end;
+  border-top-right-radius:4px;
+}
+
+@keyframes pop{
+  from{transform:scale(.9);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.btn{
+  margin-top:10px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  background:#ff4f9a;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.quiz{
+  background:white;
+  margin-top:14px;
+  padding:14px;
+  border-radius:14px;
+  font-size:14px;
+}
+.quiz button{
+  margin-top:8px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:#ff85b6;
+  color:white;
+  cursor:pointer;
+}
+
+.score{margin-top:8px;font-weight:bold}
+.comment{margin-top:6px;opacity:.85}
+
+.confetti{
+  position:fixed;
+  top:-10px;
+  width:8px;
+  height:8px;
+  animation:fall 2.5s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
+</style>
+</head>
+
+<body>
+<div class="chat-container">
+  <div class="chat-header">
+    Nida 💗
+    <div class="typing" id="typing">çevrimiçi</div>
+  </div>
+
+  <div class="chat-box" id="chatBox"></div>
+
+  <button class="btn" onclick="sendMessage()">Mesaj Gönder</button>
+
+  <div class="quiz">
+    <b id="quizQuestion">Mini Quiz 🎯</b>
+    <div id="quizOptions"></div>
+    <div class="score" id="score"></div>
+    <div class="comment" id="comment"></div>
+  </div>
+</div>
+
+<script>
+// 🔊 WhatsApp benzeri kısa pop sesi
+const msgSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+
+// 💬 Nida'nın mesaj havuzu
+const nidaMessages = [
+ "canım benim 💗",
+ "bitanem ya",
+ "hayatım 😌",
+ "eşşşek kuzum benimm 😄",
+ "bak yine gülüyorum sana",
+ "çok tatlı oluyosun farkında mısın",
+ "hatunum deme demiştim ama yakışıyo 😏",
+ "ya ciddiyim seviyorum seni",
+ "konuşma azıcık ama yanımda ol",
+ "şapşal şey 😂",
+ "kalbimi alıp kaçtın haberin olsun"
+];
+
+let usedNida=[];
+
+// Kullanıcının mesaj havuzu (rastgele)
+const userMessages = [
+ "Çooook seviyorum 😍",
+ "Seni özledim 💕",
+ "Bitanem ❤️",
+ "Canım benim 😘",
+ "Hayatım 😌",
+ "Gülüm 😄"
+];
+
+// Mesaj gönderme fonksiyonu
+function sendMessage(){
+  // Kullanıcının mesajı
+  let userMsg = userMessages[Math.floor(Math.random()*userMessages.length)];
+  const divU = document.createElement("div");
+  divU.className = "message from-you";
+  divU.innerText = userMsg;
+  document.getElementById("chatBox").appendChild(divU);
+  msgSound.currentTime=0;
+  msgSound.play().catch(()=>{});
+  scrollChat();
+
+  // Nida'nın mesajı 700ms sonra
+  setTimeout(()=>{
+    if(usedNida.length === nidaMessages.length) usedNida=[];
+    let pool = nidaMessages.filter(m=>!usedNida.includes(m));
+    let nidaMsg = pool[Math.floor(Math.random()*pool.length)];
+    usedNida.push(nidaMsg);
+
+    const divN = document.createElement("div");
+    divN.className = "message from-nida";
+    divN.innerText = nidaMsg;
+    document.getElementById("chatBox").appendChild(divN);
+    msgSound.currentTime=0;
+    msgSound.play().catch(()=>{});
+    scrollChat();
+  },700);
+}
+
+// Chat kutusunu otomatik aşağı kaydır
+function scrollChat(){
+  const chat=doc
